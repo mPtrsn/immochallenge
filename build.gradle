@@ -19,8 +19,6 @@ repositories {
 
 dependencies {
 
-	implementation 'se.michaelthelin.spotify:spotify-web-api-java:9.2.0'
-
 	compileOnly 'org.projectlombok:lombok:1.18.38'
 	annotationProcessor 'org.projectlombok:lombok:1.18.38'
 
