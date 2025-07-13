@@ -35,3 +35,11 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+### postgres ###
+postgres/data/**
+!postgres/data/.gitkeep
+
+### secrets ###
+**/application-*.yml
