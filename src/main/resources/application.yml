@@ -1,1 +1,16 @@
-spring.application.name: immochallenge
+spring:
+  application:
+    name: immochallenge
+  datasource:
+    url: todo
+    username: todo
+    password: todo
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+spotify:
+  client-id: todo
+  client-secret: todo
