@@ -16,7 +16,7 @@ public interface ArtistRepository extends CrudRepository<Artist, Long> {
                 WHERE lower(a.name)
                 ILIKE lower(:term)
             """, nativeQuery = true)
-    List<Artist> findAllByFuzzyName(@Param("term") String searchTerm);
+    List<Artist> searchByName(@Param("term") String searchTerm);
 
     @Query("""
             SELECT EXISTS (

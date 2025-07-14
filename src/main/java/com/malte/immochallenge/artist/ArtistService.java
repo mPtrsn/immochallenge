@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -23,13 +25,13 @@ public class ArtistService {
 
     public List<Artist> searchForArtist(String searchTerm) {
         var sanitizedInput = sanitizeSearchInput(searchTerm);
-        return artistRepository.findAllByFuzzyName("%" + sanitizedInput + "%");
+        if (sanitizedInput == null) {
+            return emptyList();
+        }
+        return artistRepository.searchByName("%" + sanitizedInput + "%");
     }
 
     public void handleNewArtists(List<Artist> artists, LocalDateTime synchronizationDate) {
-        int insertCount = 0;
-        int modifiedCount = 0;
-        int synchonizedCount = 0;
         for (Artist artist : artists) {
             var spotifyId = artist.getSpotifyId();
             if (artistRepository.existsBySpotifyId(spotifyId)) {
@@ -49,18 +51,14 @@ public class ArtistService {
                             .artistImages(artist.getArtistImages())
                             .build();
                     artistRepository.save(artist);
-                    synchonizedCount++;
                 } else {
                     log.debug("artist: {} was not updated because they were modified", artist.getName());
-                    modifiedCount++;
                 }
             } else {
                 artist.setLastSynchronized(synchronizationDate);
                 artistRepository.save(artist);
-                insertCount++;
             }
         }
-        log.debug("got {} artists. {} were new, {} were synchronized, {} have been manually modified", artists.size(), insertCount, synchonizedCount, modifiedCount);
     }
 
     public Artist createNewArtist(Artist artist) {
@@ -77,8 +75,8 @@ public class ArtistService {
 
     public Artist updateArtist(long id, Artist newArtist) {
         if (artistRepository.existsById(id)) {
-            newArtist.setLastModified(LocalDateTime.now());
-            return artistRepository.save(newArtist);
+            var artistToSave = newArtist.toBuilder().lastModified(LocalDateTime.now()).build();
+            return artistRepository.save(artistToSave);
         } else {
             throw new ArtistNotFoundException(id);
         }
@@ -94,10 +92,10 @@ public class ArtistService {
 
 
     private String sanitizeSearchInput(String searchTerm) {
-        if (searchTerm == null) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
             return null;
         }
-        return searchTerm.replaceAll("[^a-zA-Z0-9\\s]", "");
+        return searchTerm.toLowerCase().replaceAll("[^a-zA-Z0-9-\\s]", "");
     }
 
 }
