@@ -27,10 +27,10 @@ public class ArtistDataService {
         var synchronizationDate = LocalDateTime.now();
         try {
             var spotifyArtists = spotifyService.getArtistFromApi();
-            var list = spotifyArtists.getArtists().stream()
+            var mappedArtists = spotifyArtists.getArtists().stream()
                     .map(SpotifyArtistMapper::artistFromSpotify)
                     .toList();
-            artistService.handleNewArtists(list, synchronizationDate);
+            artistService.handleNewArtists(mappedArtists, synchronizationDate);
         } catch (SpotifyApiException | SpotifyAuthException exception) {
             log.error(exception.getMessage());
         }

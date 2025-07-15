@@ -19,7 +19,6 @@ public class ArtistController {
 
     private final ArtistService artistService;
 
-
     @GetMapping("search/{searchTerm}")
     public ResponseEntity<List<Artist>> searchArtistByName(@PathVariable String searchTerm) {
         return ResponseEntity.ok(artistService.searchForArtist(searchTerm));

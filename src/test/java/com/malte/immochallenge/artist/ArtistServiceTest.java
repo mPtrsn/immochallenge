@@ -185,7 +185,7 @@ class ArtistServiceTest {
             assertThat(savedArtist.getId()).isEqualTo(existingArtist.getId());
             assertThat(savedArtist.getSpotifyId()).isEqualTo(existingArtist.getSpotifyId());
             assertThat(savedArtist).usingRecursiveComparison()
-                    .ignoringFields("id", "spotifyId","lastModified", "lastSynchronized")
+                    .ignoringFields("id", "spotifyId", "lastModified", "lastSynchronized")
                     .isEqualTo(artist);
         }
 
@@ -220,7 +220,7 @@ class ArtistServiceTest {
     public class CreateNewArtist {
         @Test
         @DisplayName("create New Artist")
-        public void createNewArtist1(){
+        public void createNewArtist1() {
             Artist artist = getArtist();
             when(artistRepository.existsBySpotifyId(artist.getSpotifyId())).thenReturn(false);
             when(artistRepository.save(any(Artist.class))).thenAnswer(i -> i.getArgument(0));
@@ -229,13 +229,13 @@ class ArtistServiceTest {
 
             assertThat(savedArtist.getId()).isNull();
             assertThat(savedArtist).usingRecursiveComparison()
-                    .ignoringFields("id","lastModified")
+                    .ignoringFields("id", "lastModified")
                     .isEqualTo(artist);
         }
 
         @Test
         @DisplayName("create New Artist should throw when user exists")
-        public void createNewArtist2(){
+        public void createNewArtist2() {
             Artist artist = getArtist();
             when(artistRepository.existsBySpotifyId(artist.getSpotifyId())).thenReturn(true);
 
@@ -248,12 +248,12 @@ class ArtistServiceTest {
     public class UpdateArtist {
         @Test
         @DisplayName("update artist")
-        public void updateArtist1(){
+        public void updateArtist1() {
             Artist artist = getArtist();
             when(artistRepository.existsById(artist.getId())).thenReturn(true);
             when(artistRepository.save(any(Artist.class))).thenAnswer(i -> i.getArgument(0));
 
-            Artist savedArtist = artistService.updateArtist(artist.getId(),artist);
+            Artist savedArtist = artistService.updateArtist(artist.getId(), artist);
 
             assertThat(savedArtist.getLastModified()).isNotEqualTo(artist.getLastModified());
             assertThat(savedArtist).usingRecursiveComparison()
@@ -263,7 +263,7 @@ class ArtistServiceTest {
 
         @Test
         @DisplayName("update artist should throw when user not exists")
-        public void updateArtist2(){
+        public void updateArtist2() {
             Artist artist = getArtist();
             when(artistRepository.existsById(artist.getId())).thenReturn(false);
 
@@ -273,7 +273,7 @@ class ArtistServiceTest {
 
         @Test
         @DisplayName("update artist should throw when user not exists")
-        public void updateArtist3(){
+        public void updateArtist3() {
             Artist artist = getArtist();
 
             assertThatThrownBy(() -> artistService.updateArtist(artist.getId() + 1, artist)).isInstanceOf(UpdateArtistException.class)
@@ -285,7 +285,7 @@ class ArtistServiceTest {
     public class DeleteArtist {
         @Test
         @DisplayName("delete artist")
-        public void deleteArtist1(){
+        public void deleteArtist1() {
             Artist artist = getArtist();
             when(artistRepository.existsById(artist.getId())).thenReturn(true);
 
@@ -294,7 +294,7 @@ class ArtistServiceTest {
 
         @Test
         @DisplayName("update artist should throw when user not exists")
-        public void deleteArtist2(){
+        public void deleteArtist2() {
             Artist artist = getArtist();
             when(artistRepository.existsById(artist.getId())).thenReturn(false);
 
@@ -307,8 +307,8 @@ class ArtistServiceTest {
 
         return Artist.builder()
                 .id(1L)
-                .lastModified(LocalDateTime.of(2025,10,10,10,10,10,10))
-                .lastSynchronized(LocalDateTime.of(2025,5,5,5,5,5,5))
+                .lastModified(LocalDateTime.of(2025, 10, 10, 10, 10, 10, 10))
+                .lastSynchronized(LocalDateTime.of(2025, 5, 5, 5, 5, 5, 5))
                 .spotifyId("spotifyId")
                 .href("href")
                 .spotifyUri("spotifyUri")
