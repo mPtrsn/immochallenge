@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class AccessTokenResponse {
+public class SpotifyAccessTokenResponse {
     String access_token;
     String token_type;
     long expires_in;

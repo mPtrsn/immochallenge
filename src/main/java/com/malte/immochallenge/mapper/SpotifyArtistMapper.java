@@ -2,8 +2,8 @@ package com.malte.immochallenge.mapper;
 
 import com.malte.immochallenge.artist.model.Artist;
 import com.malte.immochallenge.artist.model.ArtistImage;
-import com.malte.immochallenge.spotify.response.SpotifyArtist;
-import com.malte.immochallenge.spotify.response.SpotifyImage;
+import com.malte.immochallenge.spotify.model.SpotifyArtist;
+import com.malte.immochallenge.spotify.model.SpotifyImage;
 
 public class SpotifyArtistMapper {
     public static Artist artistFromSpotify(SpotifyArtist spotifyArtist) {
@@ -20,7 +20,7 @@ public class SpotifyArtistMapper {
                 .build();
     }
 
-    public static ArtistImage imageFromSpotify(SpotifyImage spotifyImage){
+    private static ArtistImage imageFromSpotify(SpotifyImage spotifyImage) {
         return ArtistImage.builder()
                 .url(spotifyImage.getUrl())
                 .width(spotifyImage.getWidth())

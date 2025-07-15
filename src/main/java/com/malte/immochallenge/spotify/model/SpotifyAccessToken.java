@@ -1,4 +1,4 @@
-package com.malte.immochallenge.spotify.response;
+package com.malte.immochallenge.spotify.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,15 +1,13 @@
-package com.malte.immochallenge.spotify.response;
+package com.malte.immochallenge.spotify.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @ToString
 public class SpotifyArtist {
     String id;
