@@ -37,9 +37,6 @@ public class ArtistController {
 
     @PatchMapping("{id}")
     public ResponseEntity<Artist> updateArtist(@PathVariable long id, @RequestBody Artist artist) {
-        if (artist.getId() != id) {
-            throw new UpdateArtistException("provided id does not match provided artist");
-        }
         return ResponseEntity.ok(artistService.updateArtist(id, artist));
     }
 

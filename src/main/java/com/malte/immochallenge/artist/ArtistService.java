@@ -2,6 +2,7 @@ package com.malte.immochallenge.artist;
 
 import com.malte.immochallenge.artist.exceptions.ArtistAlreadyExistsException;
 import com.malte.immochallenge.artist.exceptions.ArtistNotFoundException;
+import com.malte.immochallenge.artist.exceptions.UpdateArtistException;
 import com.malte.immochallenge.artist.model.Artist;
 import com.malte.immochallenge.artist.repository.ArtistRepository;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +75,9 @@ public class ArtistService {
     }
 
     public Artist updateArtist(long id, Artist newArtist) {
+        if (newArtist.getId() != id) {
+            throw new UpdateArtistException("provided id does not match provided artist");
+        }
         if (artistRepository.existsById(id)) {
             var artistToSave = newArtist.toBuilder().lastModified(LocalDateTime.now()).build();
             return artistRepository.save(artistToSave);

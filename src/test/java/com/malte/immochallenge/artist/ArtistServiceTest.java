@@ -2,6 +2,7 @@ package com.malte.immochallenge.artist;
 
 import com.malte.immochallenge.artist.exceptions.ArtistAlreadyExistsException;
 import com.malte.immochallenge.artist.exceptions.ArtistNotFoundException;
+import com.malte.immochallenge.artist.exceptions.UpdateArtistException;
 import com.malte.immochallenge.artist.model.Artist;
 import com.malte.immochallenge.artist.model.ArtistImage;
 import com.malte.immochallenge.artist.repository.ArtistRepository;
@@ -255,6 +256,15 @@ class ArtistServiceTest {
 
             assertThatThrownBy(() -> artistService.updateArtist(artist.getId(), artist)).isInstanceOf(ArtistNotFoundException.class)
                     .hasMessageContaining("Artist with id 1 was not found");
+        }
+
+        @Test
+        @DisplayName("update artist should throw when user not exists")
+        public void updateArtist3(){
+            Artist artist = getArtist();
+
+            assertThatThrownBy(() -> artistService.updateArtist(artist.getId() + 1, artist)).isInstanceOf(UpdateArtistException.class)
+                    .hasMessageContaining("provided id does not match provided artist");
         }
     }
 
