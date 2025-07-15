@@ -11,6 +11,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    user: todo
+    password: todo
+    schemas: todo
+    url: todo
+    locations: classpath:db/migration
 spotify:
   client-id: todo
   client-secret: todo

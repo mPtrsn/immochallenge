@@ -39,7 +39,6 @@ out/
 
 ### postgres ###
 postgres/data/**
-!postgres/data/.gitkeep
 
 ### secrets ###
 **/application-*.yml
