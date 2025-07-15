@@ -39,7 +39,8 @@ public class ArtistService {
                 // artist exists
                 if (!artistRepository.artistWasModified(spotifyId)) {
                     // artist was never modified
-                    Artist existingArtist = artistRepository.findBySpotifyId(spotifyId).orElseThrow(() -> new ArtistNotFoundException(spotifyId));
+                    Artist existingArtist = artistRepository.findBySpotifyId(spotifyId)
+                            .orElseThrow(() -> new ArtistNotFoundException(spotifyId));
                     artist = existingArtist.toBuilder()
                             .lastSynchronized(synchronizationDate)
                             .href(artist.getHref())

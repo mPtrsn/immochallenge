@@ -201,6 +201,19 @@ class ArtistServiceTest {
 
             verify(artistRepository, never()).save(any(Artist.class));
         }
+
+        @Test
+        @DisplayName("should throw if user cant be found")
+        public void handleNewArtists5() {
+            Artist artist = getArtist();
+            artist.setLastSynchronized(syncDate.minusMinutes(5));
+            when(artistRepository.existsBySpotifyId(artist.getSpotifyId())).thenReturn(true);
+            when(artistRepository.artistWasModified(artist.getSpotifyId())).thenReturn(false);
+            when(artistRepository.findBySpotifyId(artist.getSpotifyId())).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> artistService.handleNewArtists(List.of(artist), syncDate)).isInstanceOf(ArtistNotFoundException.class)
+                    .hasMessageContaining("Artist with spotify id spotifyId was not found");
+        }
     }
 
     @Nested
