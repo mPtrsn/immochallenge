@@ -1,12 +1,10 @@
 package com.malte.immochallenge.spotify.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor
 @ToString
 public class SpotifyAccessTokenResponse {
