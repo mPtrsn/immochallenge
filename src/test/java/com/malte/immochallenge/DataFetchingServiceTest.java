@@ -3,7 +3,7 @@ package com.malte.immochallenge;
 import com.malte.immochallenge.album.AlbumService;
 import com.malte.immochallenge.artist.ArtistService;
 import com.malte.immochallenge.artist.model.Artist;
-import com.malte.immochallenge.artist.model.Image;
+import com.malte.immochallenge.model.Image;
 import com.malte.immochallenge.spotify.SpotifyService;
 import com.malte.immochallenge.spotify.exception.SpotifyApiException;
 import com.malte.immochallenge.spotify.model.SpotifyApiResponse;

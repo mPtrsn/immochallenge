@@ -1,4 +1,4 @@
-package com.malte.immochallenge.artist.model;
+package com.malte.immochallenge.model;
 
 
 import jakarta.persistence.Embeddable;

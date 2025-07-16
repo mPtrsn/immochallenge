@@ -57,7 +57,7 @@ public class ArtistService {
                     log.debug("artist: {} was not updated because they were modified", artist.getName());
                 }
             } else {
-                artist.setLastSynchronized(synchronizationDate);
+                artist = artist.toBuilder().lastSynchronized(synchronizationDate).build();
                 artistRepository.save(artist);
             }
         }

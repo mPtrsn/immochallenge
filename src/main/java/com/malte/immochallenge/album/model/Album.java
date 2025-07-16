@@ -1,7 +1,7 @@
 package com.malte.immochallenge.album.model;
 
 
-import com.malte.immochallenge.artist.model.Image;
+import com.malte.immochallenge.model.Image;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

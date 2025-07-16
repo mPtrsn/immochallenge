@@ -1,6 +1,7 @@
 package com.malte.immochallenge.artist.model;
 
 import com.malte.immochallenge.artist.repository.PostgresStringConverter;
+import com.malte.immochallenge.model.Image;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

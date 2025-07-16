@@ -3,7 +3,7 @@ package com.malte.immochallenge.mapper;
 import com.malte.immochallenge.album.model.Album;
 import com.malte.immochallenge.album.model.SimplifiedArtist;
 import com.malte.immochallenge.artist.model.Artist;
-import com.malte.immochallenge.artist.model.Image;
+import com.malte.immochallenge.model.Image;
 import com.malte.immochallenge.spotify.model.SpotifyAlbum;
 import com.malte.immochallenge.spotify.model.SpotifyArtist;
 import com.malte.immochallenge.spotify.model.SpotifyImage;

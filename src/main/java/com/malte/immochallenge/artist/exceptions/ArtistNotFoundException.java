@@ -6,6 +6,6 @@ public class ArtistNotFoundException extends RuntimeException {
     }
 
     public ArtistNotFoundException(String id) {
-        super("Artist with spotify id " + id + " was not found");
+        super("Artist with spotifyId " + id + " was not found");
     }
 }

@@ -67,7 +67,7 @@ public class AlbumService {
                     log.debug("album: {} was not updated because they were modified", album.getName());
                 }
             } else {
-                album.toBuilder().lastSynchronized(synchronizationDate).build();
+                album = album.toBuilder().lastSynchronized(synchronizationDate).build();
                 albumRepository.save(album);
             }
         }

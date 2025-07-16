@@ -2,7 +2,7 @@ package com.malte.immochallenge.album.exceptions;
 
 public class AlbumNotFoundException extends RuntimeException {
     public AlbumNotFoundException(String spotifyId) {
-        super("Album with id " + spotifyId + " was not found");
+        super("Album with spotifyId " + spotifyId + " was not found");
     }
 
     public AlbumNotFoundException(long id) {

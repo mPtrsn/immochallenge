@@ -21,8 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -52,6 +51,26 @@ class SpotifyServiceTest {
     void resetMockServer() {
         server.reset();
         when(configuration.getArtistIds()).thenReturn(List.of("test"));
+    }
+
+    @Test
+    @DisplayName("should make all data requests")
+    void getDataFromSpotify() throws JsonProcessingException {
+        when(spotifyAuthService.getAccessToken()).thenReturn(SpotifyAccessToken.builder().token("").build());
+        server.expect(requestTo(artistUrl))
+                .andRespond(withSuccess(mapper.writeValueAsString(SpotifyArtistsResponse.builder().artists(List.of(getSpotifyArtist())).build()), MediaType.APPLICATION_JSON));
+        server.expect(requestTo(albumUrl))
+                .andRespond(withSuccess(mapper.writeValueAsString(SpotifyAlbumsResponse.builder().items(List.of(getSpotifyAlbum(), getSpotifyAlbum())).build()), MediaType.APPLICATION_JSON));
+
+        var response = spotifyService.getDataFromSpotify();
+
+        assertThat(response).isNotNull();
+        assertThat(response.getArtists()).hasSize(1);
+        assertThat(response.getAlbums()).hasSize(2);
+        verify(spotifyAuthService, times(2)).getAccessToken();
+
+        server.verify();
+
     }
 
     @Test
@@ -133,12 +152,12 @@ class SpotifyServiceTest {
 
     private SpotifyAlbum getSpotifyAlbum() {
         return SpotifyAlbum.builder()
+                .id("spotifyId")
                 .album_type("single")
                 .total_tracks(2)
                 .available_markets(List.of("DE"))
                 .external_urls(SpotifyExternalUrls.builder().spotify("externalUrl").build())
                 .href("href")
-                .id("spotifyId")
                 .images(List.of(SpotifyImage.builder().url("imageUrl").width(10).height(15).build()))
                 .name("albumName")
                 .release_date("releaseDate")

@@ -4,7 +4,7 @@ import com.malte.immochallenge.artist.exceptions.ArtistAlreadyExistsException;
 import com.malte.immochallenge.artist.exceptions.ArtistNotFoundException;
 import com.malte.immochallenge.artist.exceptions.UpdateArtistException;
 import com.malte.immochallenge.artist.model.Artist;
-import com.malte.immochallenge.artist.model.Image;
+import com.malte.immochallenge.model.Image;
 import com.malte.immochallenge.artist.repository.ArtistRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -169,7 +169,7 @@ class ArtistServiceTest {
                     .popularity(1)
                     .images(List.of(Image.builder().url("existing").width(1).height(1).build()))
                     .build();
-            artist.setLastSynchronized(syncDate.minusMinutes(5));
+            artist = artist.toBuilder().lastSynchronized(syncDate.minusMinutes(5)).build();
             when(artistRepository.existsBySpotifyId(artist.getSpotifyId())).thenReturn(true);
             when(artistRepository.artistWasModified(artist.getSpotifyId())).thenReturn(false);
             when(artistRepository.findBySpotifyId(artist.getSpotifyId())).thenReturn(Optional.of(existingArtist));
@@ -212,7 +212,7 @@ class ArtistServiceTest {
             when(artistRepository.findBySpotifyId(artist.getSpotifyId())).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> artistService.handleNewArtists(List.of(artist), syncDate)).isInstanceOf(ArtistNotFoundException.class)
-                    .hasMessageContaining("Artist with spotify id spotifyId was not found");
+                    .hasMessageContaining("Artist with spotifyId spotifyId was not found");
         }
     }
 
@@ -240,7 +240,7 @@ class ArtistServiceTest {
             when(artistRepository.existsBySpotifyId(artist.getSpotifyId())).thenReturn(true);
 
             assertThatThrownBy(() -> artistService.createNewArtist(artist)).isInstanceOf(ArtistAlreadyExistsException.class)
-                    .hasMessageContaining("artist with spotify id spotifyId already exists");
+                    .hasMessageContaining("artist with spotifyId spotifyId already exists");
         }
     }
 
