@@ -25,7 +25,7 @@ public class DataFetchingService {
 
     //    @Scheduled(cron = "0/60 0 0 ? * *")
     @Scheduled(fixedDelay = 60, timeUnit = TimeUnit.SECONDS)
-    public void getArtistDataPeriodically() {
+    public void getSpotifyDataPeriodically() {
         var synchronizationDate = LocalDateTime.now();
         try {
             var apiResponse = spotifyService.getDataFromSpotify();

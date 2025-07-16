@@ -315,7 +315,6 @@ class AlbumServiceTest {
                 .lastModified(LocalDateTime.of(2025, 7, 7, 7, 7))
                 .lastSynchronized(LocalDateTime.of(2025, 9, 9, 9, 9))
                 .spotifyId("spotifyId")
-                .spotifyUri("uri")
                 .name("name")
                 .albumType("type")
                 .totalTracks(5)
