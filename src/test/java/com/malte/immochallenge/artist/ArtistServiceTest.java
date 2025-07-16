@@ -4,7 +4,7 @@ import com.malte.immochallenge.artist.exceptions.ArtistAlreadyExistsException;
 import com.malte.immochallenge.artist.exceptions.ArtistNotFoundException;
 import com.malte.immochallenge.artist.exceptions.UpdateArtistException;
 import com.malte.immochallenge.artist.model.Artist;
-import com.malte.immochallenge.artist.model.ArtistImage;
+import com.malte.immochallenge.artist.model.Image;
 import com.malte.immochallenge.artist.repository.ArtistRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -167,7 +167,7 @@ class ArtistServiceTest {
                     .followers(1)
                     .genres(List.of("existing"))
                     .popularity(1)
-                    .artistImages(List.of(ArtistImage.builder().url("existing").width(1).height(1).build()))
+                    .images(List.of(Image.builder().url("existing").width(1).height(1).build()))
                     .build();
             artist.setLastSynchronized(syncDate.minusMinutes(5));
             when(artistRepository.existsBySpotifyId(artist.getSpotifyId())).thenReturn(true);
@@ -317,7 +317,7 @@ class ArtistServiceTest {
                 .followers(123456L)
                 .genres(List.of("genre1", "genre2"))
                 .popularity(50)
-                .artistImages(List.of(ArtistImage.builder().url("image url").width(100).height(200).build()))
+                .images(List.of(Image.builder().url("image url").width(100).height(200).build()))
                 .build();
     }
 

@@ -1,15 +1,15 @@
 package com.malte.immochallenge;
 
+import com.malte.immochallenge.album.AlbumService;
 import com.malte.immochallenge.artist.ArtistService;
 import com.malte.immochallenge.artist.model.Artist;
-import com.malte.immochallenge.artist.model.ArtistImage;
+import com.malte.immochallenge.artist.model.Image;
 import com.malte.immochallenge.spotify.SpotifyService;
 import com.malte.immochallenge.spotify.exception.SpotifyApiException;
+import com.malte.immochallenge.spotify.model.SpotifyApiResponse;
 import com.malte.immochallenge.spotify.model.SpotifyArtist;
 import com.malte.immochallenge.spotify.model.SpotifyExternalUrls;
-import com.malte.immochallenge.spotify.model.SpotifyFollowers;
 import com.malte.immochallenge.spotify.model.SpotifyImage;
-import com.malte.immochallenge.spotify.response.SpotifyArtistsResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -24,14 +24,16 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class ArtistDataServiceTest {
+class DataFetchingServiceTest {
 
     @Mock
     SpotifyService spotifyService;
     @Mock
     ArtistService artistService;
+    @Mock
+    AlbumService albumService;
     @InjectMocks
-    ArtistDataService artistDataService;
+    DataFetchingService dataFetchingService;
 
     @Captor
     ArgumentCaptor<List<Artist>> artistCaptor;
@@ -39,11 +41,12 @@ class ArtistDataServiceTest {
 
     @Test
     public void getArtistDataPeriodically1() {
-        Mockito.when(spotifyService.getArtistFromApi()).thenReturn(SpotifyArtistsResponse.builder()
+        Mockito.when(spotifyService.getDataFromSpotify()).thenReturn(SpotifyApiResponse.builder()
                 .artists(List.of(getSpotifyArtist()))
+                .albums(List.of())
                 .build());
 
-        artistDataService.getArtistDataPeriodically();
+        dataFetchingService.getArtistDataPeriodically();
 
         verify(artistService).handleNewArtists(artistCaptor.capture(), any());
         assertThat(artistCaptor.getValue()).hasSize(1);
@@ -59,15 +62,15 @@ class ArtistDataServiceTest {
                 .followers(100L)
                 .genres(List.of("genre"))
                 .popularity(1)
-                .artistImages(List.of(ArtistImage.builder().url("imageUrl").width(10).height(15).build()))
+                .images(List.of(Image.builder().url("imageUrl").width(10).height(15).build()))
                 .build());
     }
 
     @Test
     public void getArtistDataPeriodically2() {
-        Mockito.when(spotifyService.getArtistFromApi()).thenThrow(new SpotifyApiException(HttpStatus.BAD_REQUEST, "Bad Request"));
+        Mockito.when(spotifyService.getDataFromSpotify()).thenThrow(new SpotifyApiException(HttpStatus.BAD_REQUEST, "Bad Request"));
 
-        artistDataService.getArtistDataPeriodically();
+        dataFetchingService.getArtistDataPeriodically();
 
         verify(artistService, never()).handleNewArtists(artistCaptor.capture(), any());
     }
@@ -81,7 +84,7 @@ class ArtistDataServiceTest {
                 .type("type")
                 .popularity(1)
                 .external_urls(new SpotifyExternalUrls("externalUrl"))
-                .followers(new SpotifyFollowers(null, 100L))
+                .followers(SpotifyArtist.SpotifyFollowers.builder().href(null).total(100L).build())
                 .genres(List.of("genre"))
                 .images(List.of(SpotifyImage.builder().url("imageUrl").width(10).height(15).build()))
                 .build();

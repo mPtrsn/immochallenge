@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Embeddable
-public class ArtistImage {
+public class Image {
     String url;
     Integer height;
     Integer width;

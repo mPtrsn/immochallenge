@@ -21,4 +21,13 @@ public class SpotifyArtist {
     SpotifyFollowers followers;
     List<String> genres;
     List<SpotifyImage> images;
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class SpotifyFollowers {
+        String href;
+        long total;
+    }
 }

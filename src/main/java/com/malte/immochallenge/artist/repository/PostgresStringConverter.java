@@ -9,7 +9,7 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 
 @Converter
-public class GenreConverter implements AttributeConverter<List<String>, String> {
+public class PostgresStringConverter implements AttributeConverter<List<String>, String> {
     private static final String SPLIT_CHAR = ";";
 
     @Override

@@ -20,3 +20,6 @@ spring:
 spotify:
   client-id: todo
   client-secret: todo
+  artist-ids:
+    - todo
+    - todo

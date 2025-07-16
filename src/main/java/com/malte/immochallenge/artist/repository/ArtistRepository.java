@@ -38,17 +38,3 @@ public interface ArtistRepository extends CrudRepository<Artist, Long> {
 
     Optional<Artist> findBySpotifyId(String spotifyId);
 }
-
-/*
-
-@Query(value = """
-                SELECT p.id AS id,
-                       p.firebase_id AS firebaseId,
-                       p.username AS username,
-                       p.profile_image_url AS profileImageUrl
-                FROM Profile p
-                WHERE lower(p.username)
-                ILIKE lower(:term)
-            """, nativeQuery = true)
-    List<ShortProfileProjection> findShortProfileByPartialUsername(@Param("term") String searchTerm);
- */

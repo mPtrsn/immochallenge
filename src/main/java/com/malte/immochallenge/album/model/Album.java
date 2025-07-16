@@ -1,7 +1,11 @@
-package com.malte.immochallenge.artist.model;
+package com.malte.immochallenge.album.model;
 
-import com.malte.immochallenge.artist.repository.PostgresStringConverter;
-import jakarta.persistence.*;
+
+import com.malte.immochallenge.artist.model.Image;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,15 +16,13 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder(toBuilder = true)
-public class Artist {
-
+public class Album {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     Long id;
-
     /**
      * the date time when this artist was last manually modified
      */
@@ -32,16 +34,18 @@ public class Artist {
 
     String spotifyId;
     String name;
-    long followers;
-    @Convert(converter = PostgresStringConverter.class)
-    List<String> genres;
-    int popularity;
+    String albumType;
+    int totalTracks;
+    String releaseDate;
+    String releaseDatePrecision;
+    String albumGroup;
+    @ElementCollection
+    List<SimplifiedArtist> artists;
+    String restrictionReason;
     @ElementCollection
     List<Image> images;
 
     String href;
     String spotifyUri;
     String externalUrl;
-
-
 }

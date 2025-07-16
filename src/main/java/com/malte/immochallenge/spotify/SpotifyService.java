@@ -2,6 +2,10 @@ package com.malte.immochallenge.spotify;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.malte.immochallenge.spotify.exception.SpotifyApiException;
+import com.malte.immochallenge.spotify.model.SpotifyAlbum;
+import com.malte.immochallenge.spotify.model.SpotifyApiResponse;
+import com.malte.immochallenge.spotify.model.SpotifyArtist;
+import com.malte.immochallenge.spotify.response.SpotifyAlbumsResponse;
 import com.malte.immochallenge.spotify.response.SpotifyApiErrorResponse;
 import com.malte.immochallenge.spotify.response.SpotifyArtistsResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -23,29 +28,47 @@ public class SpotifyService {
 
     private final RestClient restClient;
     private final SpotifyAuthService spotifyAuthService;
+    private final SpotifyConfiguration configuration;
 
-    private static final List<String> artistIds = List.of(
-            "4oDjh8wNW5vDHyFRrDYC4k",
-            "2FXC3k01G6Gw61bmprjgqS",
-            "1t20wYnTiAT0Bs7H1hv9Wt",
-            "6XyY86QOPPrYVGvF9ch6wz",
-            "6eXZu6O7nAUA5z6vLV8NKI",
-            "5SHgclK1ZpTdfdAmXW7J6s",
-            "5wD0owYApRtYmjPWavWKvb",
-            "6I8TDGeUmmLom8auKPzMdX",
-            "4LLpKhyESsyAXpc4laK94U",
-            "7Ln80lUS6He07XvHI8qqHH",
-            "21mKp7DqtSNHhCAU2ugvUw"
-    );
 
-    public SpotifyArtistsResponse getArtistFromApi() {
+    public SpotifyApiResponse getDataFromSpotify() {
+        return SpotifyApiResponse.builder()
+                .artists(getArtistFromApi())
+                .albums(getAlbumsFromApi())
+                .build();
+    }
+
+    public List<SpotifyArtist> getArtistFromApi() {
         var accessToken = spotifyAuthService.getAccessToken();
-        var response = restClient.get()
-                .uri("https://api.spotify.com/v1/artists?ids={ids}", String.join(",", artistIds))
+        var artistsResponse = restClient.get()
+                .uri("https://api.spotify.com/v1/artists?ids={ids}", String.join(",", configuration.getArtistIds()))
                 .header("Authorization", "Bearer " + accessToken.getToken())
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, SpotifyService::handleApiError)
                 .toEntity(SpotifyArtistsResponse.class);
+        if (artistsResponse.getBody() == null || artistsResponse.getBody().getArtists() == null) {
+            throw new SpotifyApiException((HttpStatus) artistsResponse.getStatusCode(), "body was empty on success. this should not happen");
+        }
+        return artistsResponse.getBody().getArtists();
+    }
+
+    public List<SpotifyAlbum> getAlbumsFromApi() {
+        return configuration.getArtistIds().stream()
+                .map(this::getAlbumsForArtistsFromApi)
+                .map(SpotifyAlbumsResponse::getItems)
+                .flatMap(Collection::stream)
+                .toList();
+    }
+
+    private SpotifyAlbumsResponse getAlbumsForArtistsFromApi(String artistId) {
+        var accessToken = spotifyAuthService.getAccessToken();
+
+        var response = restClient.get()
+                .uri("https://api.spotify.com/v1/artists/{id}/albums", artistId)
+                .header("Authorization", "Bearer " + accessToken.getToken())
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, SpotifyService::handleApiError)
+                .toEntity(SpotifyAlbumsResponse.class);
         return response.getBody();
     }
 

@@ -50,7 +50,7 @@ public class ArtistService {
                             .followers(artist.getFollowers())
                             .genres(artist.getGenres())
                             .popularity(artist.getPopularity())
-                            .artistImages(artist.getArtistImages())
+                            .images(artist.getImages())
                             .build();
                     artistRepository.save(artist);
                 } else {
