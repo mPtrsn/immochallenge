@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -23,8 +22,7 @@ public class DataFetchingService {
     private final ArtistService artistService;
     private final AlbumService albumService;
 
-    //    @Scheduled(cron = "0/60 0 0 ? * *")
-    @Scheduled(fixedDelay = 60, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(cron = "0 * * * * *")
     public void getSpotifyDataPeriodically() {
         var synchronizationDate = LocalDateTime.now();
         try {
