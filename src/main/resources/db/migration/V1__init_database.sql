@@ -3,13 +3,13 @@ CREATE TABLE artist (
     last_modified timestamp(6) without time zone NULL,
     last_synchronized timestamp(6) without time zone NULL,
     spotify_id character varying(255) NOT NULL,
-    href character varying(255) NULL,
-    spotify_uri character varying(255) NULL,
-    external_url character varying(255) NULL,
     name character varying(255) NULL,
     followers bigint NOT NULL,
     genres character varying(255) NULL,
-    popularity integer NOT NULL
+    popularity integer NOT NULL,
+    href character varying(255) NULL,
+    spotify_uri character varying(255) NULL,
+    external_url character varying(255) NULL
   );
 
   CREATE TABLE album (
